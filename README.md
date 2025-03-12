@@ -1,6 +1,6 @@
 # Debug Vibrations - Testing Project
 
-This repository is a simple testing project for video coding demonstrations and showcasing the capabilities of agentic Claude 3.7 AI assistant.
+This repository is a simple testing project for vibe coding demonstrations and showcasing the capabilities of agentic Claude 3.7 AI assistant.
 
 ## Project Overview
 
