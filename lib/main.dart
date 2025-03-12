@@ -77,6 +77,11 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
       pattern: [500],
       description: 'A single long vibration (500ms)',
     ),
+    const VibrationPattern(
+      name: 'Extra Long',
+      pattern: [1000],
+      description: 'A single extra long vibration (1000ms)',
+    ),
     
     // Notification patterns
     const VibrationPattern(
@@ -94,6 +99,31 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
       pattern: [300, 100, 300, 100, 300],
       description: 'Triple notification pattern',
     ),
+    const VibrationPattern(
+      name: 'Gentle Notification',
+      pattern: [200, 100, 100],
+      description: 'Gentle notification pattern',
+    ),
+    const VibrationPattern(
+      name: 'Urgent Notification',
+      pattern: [400, 100, 400, 100, 400],
+      description: 'Urgent notification pattern with stronger vibrations',
+    ),
+    const VibrationPattern(
+      name: 'Message Notification',
+      pattern: [100, 50, 100],
+      description: 'Short notification pattern for messages',
+    ),
+    const VibrationPattern(
+      name: 'Email Notification',
+      pattern: [200, 100, 200, 100, 200],
+      description: 'Triple short notification pattern for emails',
+    ),
+    const VibrationPattern(
+      name: 'Calendar Notification',
+      pattern: [300, 200, 500],
+      description: 'Escalating pattern for calendar events',
+    ),
     
     // Alert patterns
     const VibrationPattern(
@@ -105,6 +135,22 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
       name: 'Urgent Alert',
       pattern: [500, 100, 500, 100, 500],
       description: 'Urgent alert pattern with three long vibrations',
+    ),
+    const VibrationPattern(
+      name: 'Warning',
+      pattern: [700, 200, 700],
+      description: 'Warning pattern with very long vibrations',
+    ),
+    const VibrationPattern(
+      name: 'Critical Alert',
+      pattern: [800, 200, 800, 200, 800, 200, 800],
+      description: 'Critical alert with four long vibrations',
+    ),
+    const VibrationPattern(
+      name: 'Alarm',
+      pattern: [500, 200, 500, 200, 500, 200, 500, 200, 500],
+      description: 'Continuous alarm pattern',
+      repeat: 2,
     ),
     
     // Rhythmic patterns
@@ -123,6 +169,33 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
       name: 'Slow Pulses',
       pattern: [300, 200, 300, 200, 300],
       description: 'Series of slow pulses',
+    ),
+    const VibrationPattern(
+      name: 'Rapid Taps',
+      pattern: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
+      description: 'Very quick tapping sensation',
+    ),
+    const VibrationPattern(
+      name: 'Crescendo',
+      pattern: [50, 50, 100, 50, 150, 50, 200, 50, 250, 50, 300],
+      description: 'Gradually increasing intensity',
+    ),
+    const VibrationPattern(
+      name: 'Decrescendo',
+      pattern: [300, 50, 250, 50, 200, 50, 150, 50, 100, 50, 50],
+      description: 'Gradually decreasing intensity',
+    ),
+    const VibrationPattern(
+      name: 'Waltz',
+      pattern: [300, 100, 100, 100, 100, 100],
+      repeat: 2,
+      description: 'Waltz rhythm (ONE-two-three)',
+    ),
+    const VibrationPattern(
+      name: 'Marching',
+      pattern: [200, 200, 200, 200],
+      repeat: 2,
+      description: 'Steady marching rhythm',
     ),
     
     // Communication patterns
@@ -145,6 +218,58 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
       pattern: [300, 100, 300],
       description: 'Error feedback pattern',
     ),
+    const VibrationPattern(
+      name: 'Confirmation',
+      pattern: [100, 50, 200],
+      description: 'Short confirmation pattern',
+    ),
+    const VibrationPattern(
+      name: 'Completion',
+      pattern: [300, 100, 100, 100, 500],
+      description: 'Task completion pattern',
+    ),
+    const VibrationPattern(
+      name: 'Attention',
+      pattern: [500, 200, 100, 200, 100],
+      description: 'Pattern to grab attention',
+    ),
+    
+    // Haptic feedback patterns
+    const VibrationPattern(
+      name: 'Button Press',
+      pattern: [40],
+      description: 'Very short feedback for button press',
+    ),
+    const VibrationPattern(
+      name: 'Selection Change',
+      pattern: [20, 30, 40],
+      description: 'Subtle feedback for selection changes',
+    ),
+    const VibrationPattern(
+      name: 'Slider Change',
+      pattern: [30],
+      description: 'Minimal feedback for slider adjustments',
+    ),
+    const VibrationPattern(
+      name: 'Toggle',
+      pattern: [60],
+      description: 'Feedback for toggle switches',
+    ),
+    const VibrationPattern(
+      name: 'Keyboard Tap',
+      pattern: [15],
+      description: 'Very light feedback for keyboard presses',
+    ),
+    const VibrationPattern(
+      name: 'Heavy Impact',
+      pattern: [400],
+      description: 'Strong feedback for significant actions',
+    ),
+    const VibrationPattern(
+      name: 'Light Impact',
+      pattern: [80],
+      description: 'Light feedback for minor actions',
+    ),
     
     // Special patterns
     const VibrationPattern(
@@ -162,6 +287,71 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
       pattern: [100, 50, 200, 50, 300, 50, 400, 50, 500, 50, 400, 50, 300, 50, 200, 50, 100],
       description: 'Wave-like pattern with increasing then decreasing durations',
     ),
+    const VibrationPattern(
+      name: 'Ripple',
+      pattern: [50, 50, 100, 50, 150, 50, 200, 50, 250, 50, 300, 50, 350, 50, 400],
+      description: 'Ripple effect with gradually increasing durations',
+    ),
+    const VibrationPattern(
+      name: 'Heartbeat Intense',
+      pattern: [150, 100, 150, 600],
+      repeat: 4,
+      description: 'More pronounced heartbeat rhythm',
+    ),
+    const VibrationPattern(
+      name: 'Morse A',
+      pattern: [100, 100, 300],
+      description: 'Letter A in Morse code (.-)',
+    ),
+    const VibrationPattern(
+      name: 'Morse B',
+      pattern: [300, 100, 100, 100, 100, 100, 100],
+      description: 'Letter B in Morse code (-...)',
+    ),
+    const VibrationPattern(
+      name: 'Morse C',
+      pattern: [300, 100, 100, 100, 300, 100, 100],
+      description: 'Letter C in Morse code (-.-.)',
+    ),
+    const VibrationPattern(
+      name: 'Morse Hello',
+      pattern: [
+        100, 100, 100, 100, 100, 100, 100, 100,  // H (.....)
+        100, 100,                                // E (.)
+        100, 100, 100, 100, 100,                 // L (.-..)
+        100, 100, 100, 100, 100,                 // L (.-..)
+        300, 100, 300, 100, 300                  // O (---)
+      ],
+      description: 'Spells "HELLO" in Morse code',
+    ),
+    const VibrationPattern(
+      name: 'Countdown',
+      pattern: [300, 700, 300, 700, 300, 700, 1000],
+      description: '3-2-1 countdown pattern ending with long vibration',
+    ),
+    const VibrationPattern(
+      name: 'Celebration',
+      pattern: [100, 50, 100, 50, 100, 50, 100, 50, 100, 50, 500],
+      description: 'Celebration pattern with quick pulses and final long vibration',
+    ),
+    const VibrationPattern(
+      name: 'Drumbeat',
+      pattern: [100, 200, 300, 200, 100, 200, 300, 200],
+      repeat: 1,
+      description: 'Rhythmic drumbeat pattern',
+    ),
+    const VibrationPattern(
+      name: 'Rainfall',
+      pattern: [50, 150, 30, 200, 70, 100, 40, 180, 60, 120],
+      repeat: 1,
+      description: 'Random-feeling pattern like rainfall',
+    ),
+    const VibrationPattern(
+      name: 'Gallop',
+      pattern: [100, 100, 100, 300, 100, 100, 100, 300],
+      repeat: 1,
+      description: 'Horse gallop rhythm',
+    ),
   ];
 
   // iOS-specific vibration patterns
@@ -176,6 +366,11 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
     {'name': 'Light', 'description': 'Light impact vibration'},
     {'name': 'Rigid', 'description': 'Rigid impact vibration'},
     {'name': 'Soft', 'description': 'Soft impact vibration'},
+    {'name': 'Selection', 'description': 'Selection change vibration'},
+    {'name': 'Old Phone', 'description': 'Classic phone vibration pattern'},
+    {'name': 'Double Tap', 'description': 'Double tap feedback'},
+    {'name': 'Triple Tap', 'description': 'Triple tap feedback'},
+    {'name': 'Heartbeat', 'description': 'Heartbeat pattern'},
   ];
 
   // Amplitude presets
@@ -424,6 +619,21 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
             break;
           case 'Soft':
             Vibration.vibrate(pattern: [200, 100, 200]);
+            break;
+          case 'Selection':
+            Vibration.vibrate(pattern: [20, 30, 40]);
+            break;
+          case 'Old Phone':
+            Vibration.vibrate(pattern: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100]);
+            break;
+          case 'Double Tap':
+            Vibration.vibrate(pattern: [50, 100, 50]);
+            break;
+          case 'Triple Tap':
+            Vibration.vibrate(pattern: [50, 100, 50, 100, 50]);
+            break;
+          case 'Heartbeat':
+            Vibration.vibrate(pattern: [100, 100, 100, 400, 100, 100, 100, 400]);
             break;
           default:
             Vibration.vibrate(duration: 300);
