@@ -5,6 +5,45 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'web_vibration.dart';
 
+// Define VibrationPreset enum to match the library's presets
+enum VibrationPreset {
+  alarm,
+  notification,
+  heartbeat,
+  singleShortBuzz,
+  doubleBuzz,
+  tripleBuzz,
+  longAlarmBuzz,
+  pulseWave,
+  progressiveBuzz,
+  rhythmicBuzz,
+  gentleReminder,
+  quickSuccessAlert,
+  zigZagAlert,
+  softPulse,
+  emergencyAlert,
+  heartbeatVibration,
+  countdownTimerAlert,
+  rapidTapFeedback,
+  dramaticNotification,
+  urgentBuzzWave,
+}
+
+// Define VibrationPresetConfig class to store pattern and description
+class VibrationPresetConfig {
+  final List<int> pattern;
+  final String description;
+  final int? repeat;
+  final int? amplitude;
+
+  const VibrationPresetConfig({
+    required this.pattern,
+    required this.description,
+    this.repeat,
+    this.amplitude,
+  });
+}
+
 void main() {
   // Ensure Flutter is initialized properly
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +97,96 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
   bool _hasCustomDurations = false;
   bool _isVibrating = false;
   bool _isIOS = false;
+
+  // Map of VibrationPreset to VibrationPresetConfig
+  final Map<VibrationPreset, VibrationPresetConfig> presets = {
+    VibrationPreset.alarm: const VibrationPresetConfig(
+      pattern: [500, 200, 500, 200, 500, 200, 500, 200, 500],
+      description: 'Continuous alarm pattern',
+      repeat: 2,
+    ),
+    VibrationPreset.notification: const VibrationPresetConfig(
+      pattern: [300, 100, 100],
+      description: 'Standard notification pattern',
+    ),
+    VibrationPreset.heartbeat: const VibrationPresetConfig(
+      pattern: [100, 100, 100, 400],
+      description: 'Simulates a heartbeat rhythm',
+      repeat: 3,
+    ),
+    VibrationPreset.singleShortBuzz: const VibrationPresetConfig(
+      pattern: [100],
+      description: 'A single short vibration (100ms)',
+    ),
+    VibrationPreset.doubleBuzz: const VibrationPresetConfig(
+      pattern: [100, 50, 100],
+      description: 'Two short vibrations in quick succession',
+    ),
+    VibrationPreset.tripleBuzz: const VibrationPresetConfig(
+      pattern: [100, 50, 100, 50, 100],
+      description: 'Three short vibrations in quick succession',
+    ),
+    VibrationPreset.longAlarmBuzz: const VibrationPresetConfig(
+      pattern: [800, 200, 800, 200, 800],
+      description: 'Long vibrations for important alarms',
+      repeat: 1,
+    ),
+    VibrationPreset.pulseWave: const VibrationPresetConfig(
+      pattern: [100, 50, 150, 50, 200, 50, 250, 50, 200, 50, 150, 50, 100],
+      description: 'Wave-like pattern with increasing then decreasing durations',
+    ),
+    VibrationPreset.progressiveBuzz: const VibrationPresetConfig(
+      pattern: [50, 50, 100, 50, 150, 50, 200, 50, 250, 50, 300],
+      description: 'Gradually increasing intensity',
+    ),
+    VibrationPreset.rhythmicBuzz: const VibrationPresetConfig(
+      pattern: [100, 100, 200, 100, 100, 100, 200, 100],
+      description: 'Rhythmic pattern with regular intervals',
+      repeat: 1,
+    ),
+    VibrationPreset.gentleReminder: const VibrationPresetConfig(
+      pattern: [50, 100, 50, 100, 50],
+      description: 'Gentle triple tap for subtle reminders',
+    ),
+    VibrationPreset.quickSuccessAlert: const VibrationPresetConfig(
+      pattern: [50, 30, 100, 30, 200],
+      description: 'Quick pattern indicating success',
+    ),
+    VibrationPreset.zigZagAlert: const VibrationPresetConfig(
+      pattern: [50, 50, 100, 50, 50, 50, 100, 50, 50, 50, 100],
+      description: 'Zig-zag pattern for attention-grabbing alerts',
+    ),
+    VibrationPreset.softPulse: const VibrationPresetConfig(
+      pattern: [30, 100, 30, 100, 30],
+      description: 'Very soft pulses for subtle feedback',
+    ),
+    VibrationPreset.emergencyAlert: const VibrationPresetConfig(
+      pattern: [1000, 200, 1000, 200, 1000],
+      description: 'Very long vibrations for emergency situations',
+      amplitude: 255,
+    ),
+    VibrationPreset.heartbeatVibration: const VibrationPresetConfig(
+      pattern: [150, 100, 150, 600],
+      description: 'More pronounced heartbeat rhythm',
+      repeat: 4,
+    ),
+    VibrationPreset.countdownTimerAlert: const VibrationPresetConfig(
+      pattern: [300, 700, 300, 700, 300, 700, 1000],
+      description: '3-2-1 countdown pattern ending with long vibration',
+    ),
+    VibrationPreset.rapidTapFeedback: const VibrationPresetConfig(
+      pattern: [20, 30, 20, 30, 20, 30, 20, 30, 20],
+      description: 'Very quick tapping sensation',
+    ),
+    VibrationPreset.dramaticNotification: const VibrationPresetConfig(
+      pattern: [100, 100, 200, 100, 400, 100, 800],
+      description: 'Dramatically increasing pattern for important notifications',
+    ),
+    VibrationPreset.urgentBuzzWave: const VibrationPresetConfig(
+      pattern: [100, 50, 100, 50, 300, 100, 300, 100, 500],
+      description: 'Urgent pattern with increasing intensity',
+    ),
+  };
 
   // Collection of vibration patterns
   final List<VibrationPattern> _vibrationPatterns = [
@@ -667,6 +796,29 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
     });
   }
 
+  // Vibrate with a preset
+  void _vibrateWithPreset(VibrationPreset preset) {
+    try {
+      if (_hasVibrator) {
+        final config = presets[preset]!;
+        
+        // Convert the preset to a VibrationPattern
+        final pattern = VibrationPattern(
+          name: preset.toString().split('.').last,
+          pattern: config.pattern,
+          repeat: config.repeat,
+          amplitude: config.amplitude,
+          description: config.description,
+        );
+        
+        // Use the existing vibrate method
+        _vibrate(pattern);
+      }
+    } catch (e) {
+      print('Error vibrating with preset: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -722,6 +874,11 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
                 }),
               ],
             ),
+            
+            const SizedBox(height: 16),
+            Text('Vibration Presets', style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            ..._buildPresetCategories(),
             
             if (kIsWeb) ...[
               const SizedBox(height: 16),
@@ -883,5 +1040,77 @@ class _VibrationDebugPageState extends State<VibrationDebugPage> {
     }
     
     return button;
+  }
+
+  List<Widget> _buildPresetCategories() {
+    // Group presets into categories
+    final Map<String, List<VibrationPreset>> presetCategories = {
+      'Basic': [
+        VibrationPreset.singleShortBuzz,
+        VibrationPreset.doubleBuzz,
+        VibrationPreset.tripleBuzz,
+      ],
+      'Notification': [
+        VibrationPreset.notification,
+        VibrationPreset.dramaticNotification,
+        VibrationPreset.gentleReminder,
+      ],
+      'Alert': [
+        VibrationPreset.alarm,
+        VibrationPreset.emergencyAlert,
+        VibrationPreset.longAlarmBuzz,
+        VibrationPreset.urgentBuzzWave,
+        VibrationPreset.countdownTimerAlert,
+      ],
+      'Feedback': [
+        VibrationPreset.quickSuccessAlert,
+        VibrationPreset.rapidTapFeedback,
+        VibrationPreset.softPulse,
+      ],
+      'Rhythmic': [
+        VibrationPreset.heartbeat,
+        VibrationPreset.heartbeatVibration,
+        VibrationPreset.rhythmicBuzz,
+        VibrationPreset.pulseWave,
+        VibrationPreset.progressiveBuzz,
+        VibrationPreset.zigZagAlert,
+      ],
+    };
+    
+    List<Widget> categoryWidgets = [];
+    
+    presetCategories.forEach((category, presetList) {
+      categoryWidgets.add(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+              child: Text(
+                '$category Presets', 
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+            ),
+            Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: presetList.map((preset) {
+                final config = presets[preset]!;
+                return _buildVibrationButton(
+                  preset.toString().split('.').last, 
+                  () => _vibrateWithPreset(preset),
+                  tooltip: config.description,
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      );
+    });
+    
+    return categoryWidgets;
   }
 } 
