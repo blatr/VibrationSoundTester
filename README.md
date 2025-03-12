@@ -46,6 +46,7 @@ flutter run
 
 ## 📋 Platform Support
 
+<<<<<<< HEAD
 | Platform | Status | Notes |
 |----------|--------|-------|
 | Android  | ✅     | Full vibration support |
@@ -68,3 +69,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 <p align="center">
   <i>Created for testing and debugging the vibration library in Flutter applications</i>
 </p> 
+=======
+This project was created with the assistance of Claude 3.7, an AI assistant by Anthropic, to demonstrate agentic capabilities in coding tasks. 
+>>>>>>> f1848563db538a7829a0a825fb02b53857e7e15e
