@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A minimal website to play vibrations as sounds for testing purposes.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Debug Vibrations">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Debug Vibrations</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+  
+  <!-- Script to generate beep sounds -->
+  <script>
+    // Create an audio context for generating beep sounds
+    let audioContext = null;
+    let activeOscillators = [];
+    
+    // Function to initialize the audio context
+    function initAudioContext() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Create a compressor to prevent clipping
+        const compressor = audioContext.createDynamicsCompressor();
+        compressor.threshold.value = -24;
+        compressor.knee.value = 30;
+        compressor.ratio.value = 12;
+        compressor.attack.value = 0.003;
+        compressor.release.value = 0.25;
+        compressor.connect(audioContext.destination);
+        
+        audioContext.masterCompressor = compressor;
+      }
+      return audioContext;
+    }
+    
+    // Function to generate a beep sound
+    function generateBeep(duration, frequency = 800, volume = 1.0, waveType = 'sine') {
+      const context = initAudioContext();
+      const oscillator = context.createOscillator();
+      const gainNode = context.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(context.masterCompressor);
+      
+      // Set oscillator properties
+      oscillator.type = waveType; // sine, square, sawtooth, triangle
+      oscillator.frequency.value = frequency;
+      gainNode.gain.value = volume;
+      
+      // Add attack and release to make it sound more natural
+      const now = context.currentTime;
+      gainNode.gain.setValueAtTime(0, now);
+      gainNode.gain.linearRampToValueAtTime(volume, now + 0.01);
+      gainNode.gain.linearRampToValueAtTime(volume * 0.8, now + (duration / 1000) - 0.05);
+      gainNode.gain.linearRampToValueAtTime(0, now + (duration / 1000));
+      
+      // Start and stop the oscillator
+      oscillator.start();
+      oscillator.stop(now + (duration / 1000));
+      
+      // Keep track of active oscillators
+      activeOscillators.push(oscillator);
+      
+      // Remove from active list when done
+      oscillator.onended = function() {
+        const index = activeOscillators.indexOf(oscillator);
+        if (index !== -1) {
+          activeOscillators.splice(index, 1);
+        }
+      };
+      
+      return oscillator;
+    }
+    
+    // Function to stop all active sounds
+    function stopAllSounds() {
+      if (!audioContext) return;
+      
+      // Stop all active oscillators
+      activeOscillators.forEach(osc => {
+        try {
+          osc.stop();
+        } catch (e) {
+          // Oscillator might already be stopped
+        }
+      });
+      
+      // Clear the array
+      activeOscillators = [];
+    }
+    
+    // Function to generate different types of vibration sounds
+    function generateVibrationSound(type, duration, volume = 1.0) {
+      switch(type) {
+        case 'heavy':
+          return generateBeep(duration, 120, volume, 'sine');
+        case 'medium':
+          return generateBeep(duration, 220, volume, 'sine');
+        case 'light':
+          return generateBeep(duration, 320, volume, 'sine');
+        case 'sharp':
+          return generateBeep(duration, 400, volume, 'square');
+        case 'soft':
+          return generateBeep(duration, 250, volume, 'triangle');
+        case 'buzz':
+          return generateBeep(duration, 180, volume, 'sawtooth');
+        default:
+          return generateBeep(duration, 250, volume, 'sine');
+      }
+    }
+    
+    // Make the functions available to Flutter
+    window.generateBeep = generateBeep;
+    window.stopAllSounds = stopAllSounds;
+    window.generateVibrationSound = generateVibrationSound;
+  </script>
+</head>
+<body>
+  <script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html> 
